@@ -918,14 +918,15 @@ static enum bisect_error bisect_log(void)
 static int process_replay_line(struct bisect_terms *terms, struct strbuf *line)
 {
 	const char *p = line->buf + strspn(line->buf, " \t");
+	char *word_end, *rev;
 
 	if ((!skip_prefix(p, "git bisect", &p) &&
 	!skip_prefix(p, "git-bisect", &p)) || !isspace(*p))
 		return 0;
 	p += strspn(p, " \t");
 
-	char *word_end = (char*)p + strcspn(p, " \t");
-	char *rev = word_end + strspn(word_end, " \t");
+	word_end = (char*)p + strcspn(p, " \t");
+	rev = word_end + strspn(word_end, " \t");
 	*word_end = '\0'; /* NUL-terminate the word */
 
 	get_terms(terms);
